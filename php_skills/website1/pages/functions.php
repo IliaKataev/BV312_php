@@ -29,6 +29,32 @@ function register($name, $pass, $email){
 
 function login($name, $pass){
     global $users;
+    $name=trim(htmlspecialchars($name));
+    $pass=trim(htmlspecialchars($pass));
+
+    if($name == "" || $pass == "") return false;
+    if(!file_exists(($users))) return false;
+    
+    $file = fopen($users, "r");
+    while($line=fgets($file)){
+        list($username, $password) = explode(":", $line);
+        if($username == $name && $password == md5($pass)){
+            session_start();
+            $_SESSION["username"] = $username;
+            fclose( $file );
+            return true;
+        }
+    }
+    fclose($file);
+    header("Location: index.php?page=4");
+    exit();
+}
+
+function logout(){
+    session_start();
+    $_SESSION = [];
+    session_destroy();
+    header("Location: index.php?page=1");
 }
 
 

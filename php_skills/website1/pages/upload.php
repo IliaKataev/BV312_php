@@ -1,5 +1,11 @@
 <h3>Upload Форма</h3>
 <?php 
+
+if(!isset($_SESSION["username"])){
+    echo "<h3><span style='color:red';>Доступ запрещен</h3></span>";
+    exit();
+}
+
 if(!isset($_POST["uppbtn"])){
     ?>
 <form action="" method="post" enctype="multipart/form-data">
